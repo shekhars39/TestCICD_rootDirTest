@@ -1,0 +1,5 @@
+# .dockerignore
+
+# Ignore a file or directory in the context root named "dockerfile"
+dockerfile
+.github/workflows/
