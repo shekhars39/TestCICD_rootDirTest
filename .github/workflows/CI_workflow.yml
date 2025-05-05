@@ -1,0 +1,34 @@
+# This workflow will build and push a GAGA Docker image to Azure container registry
+#
+# This workflow assumes Azure container registry is already created 
+#
+# Secret are needed to be added in github repository. Service Principle will need to be created before hand.
+# Adding new description line 
+
+
+
+name: Build and Deploy Container App
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/docker-login@v1
+        with:
+          login-server: testappreg.azurecr.io # set GAGA Container registry - crd0203use001.azurecr.io 
+          username: ${{secrets.REGISTRY_UN}}  # Service principle needs to be created and credentials to be provided
+          password: ${{secrets.RESGISTRY_PW}} # Service principle needs to be created and credentials to be provided
+      - run: |                                                 # set GAGA Container registry - crd0203use001.azurecr.io
+            docker build . -t testappreg.azurecr.io/gaga:gaga    
+            docker push testappreg.azurecr.io/gaga:gaga
+

@@ -1,0 +1,94 @@
+---
+title: "`r paste('Chlorinated Ethenes and Geochemistry Time Series Plots')`"
+output:
+  word_document:
+    reference_docx: "blank.docx" # temp version created on download
+params:
+  word_graphs: NA
+  wells: NA
+  date_range: NA
+  rendered_by_shiny: FALSE
+---
+
+
+```{r, include = FALSE}
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+
+# data from params ----------------------
+word_graphs <- params$word_graphs
+wells <- params$wells
+date_range <- params$date_range
+
+
+# dates ---------------------------
+# date_format_dmy <- "%d %B %Y" # e.g 11 January 2013
+date_format_mdy <- "%b %d, %Y" # e.g Jan 11 2013
+
+# names for selected wells ---------------------
+selected_wells <- set_names(wells)
+
+# chunk options
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.ext = 'AGG',
+  dpi = 300
+)
+```
+
+
+# Data filters
+
+This report is filtered to only include:
+
+* **`r combine_words(wells, sep = ", ")`** 
+* Results from **`r format(as.Date(date_range[1]), date_format_mdy)`** to **`r format(as.Date(date_range[2]), date_format_mdy)`**
+
+# Graph notes
+
+* When only the year is shown on the x-axis label, this represents the start of the year
+* The molar concentration graphs only plot detected data
+* ORP values that are negative cannot be put in to a log10 scale graph and will not show
+* If the dataset includes field duplicates, the greater of the two values is plotted.
+
+\newpage
+
+# Well summaries
+
+
+```{r test_plots, results='asis', fig.width=8, fig.height=8}
+
+print_if_not_null <- function(heading_text, g){
+  if(!is.null(g)){
+    cat(heading_text)
+    print(g)
+  } else {
+    # nothing at all!
+  }
+}
+
+print_graphs <- function(x, prog){
+  cat('\n\n## `', selected_wells[x], '`\n')
+  print_if_not_null('\n\n### Water Quality\n', word_graphs[[x]]$wq)
+  print_if_not_null('\n\n### TOC and Redox Parameters\n', word_graphs[[x]]$tocr)
+  print_if_not_null('\n\n### Chlorinated Ethene and Daughter Product Mass\n', word_graphs[[x]]$ce_norm)
+  print_if_not_null('\n\n### Chlorinated Ethene and Daughter Product Mass (log10)\n', word_graphs[[x]]$ce_log10)
+  print_if_not_null('\n\n### Chlorinated Ethene and Daughter Product Concentration\n', word_graphs[[x]]$ce_molar)
+  
+  if(params$rendered_by_shiny){
+    incProgress(prog) # shiny progress
+  }
+}
+
+walk(1:length(selected_wells), ~print_graphs(.x, 1/length(selected_wells)))
+
+```
+
+
+
+
+

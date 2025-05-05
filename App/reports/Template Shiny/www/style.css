@@ -1,0 +1,264 @@
+
+#nav {
+  margin-bottom: 0;
+  color: white;
+}
+
+body {
+  padding-top: 52px;
+}
+
+#map {
+  z-index: 1;
+}
+
+.container-fluid {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+#loading-content {
+  position: absolute;
+  background: #000000;
+  opacity: 0.9;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  height: 100%;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+#zoom_map {
+  z-index: 2;
+}
+
+#controls {
+  /* Appearance */
+  background-color: white;
+  padding: 0 20px 20px 20px;
+  border-radius: 5px;
+  cursor: move;
+  /* Fade out while not hovering */
+  opacity: 0.65;
+  zoom: 0.9;
+  transition: opacity 500ms 1s;
+  z-index: 2;
+}
+#controls:hover {
+  /* Fade in while hovering */
+  opacity: 0.95;
+  transition-delay: 0;
+}
+
+#controls_solid {
+  /* Appearance */
+  background-color: white;
+  padding: 0 20px 20px 20px;
+  opacity: 0.85;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.icon-red {
+  color: #d7191c;
+  padding:0;
+}
+
+.icon-blue {
+  color: #08519c;
+  padding:0;
+}
+
+.icon-yellow {
+  color:#ffd92f;
+}
+
+.icon-orange {
+  color:#fc8d62;
+}
+
+.icon-ltblue {
+  color:#a6cee3;
+}
+
+.icon-grey {
+  color:#636363;
+}
+
+.icon-pink {
+  color:#f781bf;
+}
+
+.icon-brightyellow {
+  color:#ffff33;
+}
+
+.btn-blue {
+  background-color: #003087;
+  color: white;
+  border-color: #003087;
+}
+
+.btn-blue:hover, .btn-blue:focus, .btn-blue:active {
+  background-color: #00246c;
+  color: white;
+  border-color: #00246c;
+}
+
+.btn-green {
+  background-color: #7ac143;
+  color: white;
+  border-color: #7ac143;
+}
+
+.btn-green:hover, .btn-green:focus, .btn-green:active {
+  background-color: #63a036;
+  color: white;
+  border-color: #63a036;
+}
+
+.btn-ltblue {
+  background-color: #0081c6;
+  color: white;
+  border-color: #0081c6;
+}
+
+.btn-ltblue:hover, .btn-ltblue:focus, .btn-ltblue:active {
+  background-color: #0069a4;
+  color: white;
+  border-color: #0069a4;
+}
+
+.btn-orange {
+  background-color: #f47b20;
+  color: white;
+  border-color: #f47b20;
+}
+
+.btn-orange:hover, .btn-yellow:focus, .btn-yellow:active {
+  background-color: #ce671a;
+  color: white;
+  border-color: #ce671a;
+}
+
+.btn-yellow {
+  background-color: #ffd65a;
+  color: white;
+  border-color: #ffd65a;
+}
+
+.btn-yellow:hover, .btn-yellow:focus, .btn-yellow:active {
+  background-color: #d6b34a;
+  color: white;
+  border-color: #d6b34a;
+}
+
+.title {
+  color: white;
+  font-family: Calibri, sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+h1, h2, h3, h4, h5 {
+  color: #003087;
+  font-family: Calibri, sans-serif;
+}
+
+
+h1 {
+  font-size: 18pt;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+h4 {
+  font-size: 11pt;
+  font-weight: bold;
+}
+
+h5 {
+  font-size: 11pt;
+}
+
+p {
+  color: black;
+  font-family: Calibri, sans-serif;
+  font-size: 11pt;
+}
+
+table thread, table .even {
+  background-color: #f7f7f7;
+}
+
+
+/*
+   Navbar styles
+
+/* Navbar background  */
+.navbar-default, .dropdown-menu > .active > a, 
+.dropdown-menu > .active > a {
+   background-color: #003087;
+   border-color: #003087;
+   color: white;
+}
+.navbar-default .navbar-nav > li:hover, 
+.dropdown-menu > .active > a:hover {
+   background-color: #7ac043;
+   border-color: #7ac043;
+   color: white;
+}
+
+.navbar-default .navbar-brand {
+   color: white;
+   padding-top: 12px;
+}
+
+.navbar-default:hover .navbar-brand:hover {
+   color: white;
+}
+
+.navbar-default .navbar-nav > li > a {
+   font-family: Calibri, sans-serif;
+   font-size: 14px;
+   font-weight: 200;
+   color: white;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+  color: white;
+}
+
+.dropdown-menu > li > a {
+   font-family: Calibri, sans-serif;
+   font-size: 14px;
+   font-weight: 200;
+   color: black;
+}
+
+.navbar-default .navbar-nav > .active > a, 
+.navbar-default .navbar-nav > .active > a:focus, 
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .open > a, 
+.navbar-default .navbar-nav > .open > a:focus, 
+.navbar-default .navbar-nav > .open > a:hover {
+   font-family: Calibri, sans-serif;
+   background-color: #7ac043;
+   border-color: #7ac043;
+   color: white;
+   font-weight: 400;
+}
+
+
+
+

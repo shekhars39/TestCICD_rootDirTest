@@ -1,0 +1,131 @@
+<style type="text/css">
+  
+  body{ /* Normal  */
+      font-size: 10px;
+      font-weight: 200;
+  }
+p { /* Normal  */
+      font-size: 12px;
+      font-weight: 400;
+  }
+
+l1 { /* Normal  */
+      font-size: 12px;
+      font-weight: 500;
+  }
+
+
+h1 { /* Header 1 */
+    font-size: 18px;
+    font-weight: bold;
+   color: #07569B;
+}
+h2 { /* Header 2 */
+    font-size: 16px;
+    font-weight: bold;
+    color: #07569B;
+}
+
+.toc {/* Header 2 toc*/
+    color: #696969;
+    text-align: center;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
+h3 { /* Header 3 */
+    font-size: 12px;
+    color: #07569B;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.subtitle {/* Header 3 SUBTITLE*/
+    font-size:16px;
+    font-weight: bold;
+}
+
+
+h4 { /* Header 3 */
+    font-size: 10px;
+    color: #07569B;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+h5 { /* Header 2 */
+    font-size: 10px;
+    font-weight: bold;
+    color: #07569B;
+}
+
+h6 { /* Header 6 */
+    font-size: 1px;
+  color: #07569B;
+}
+
+.r{ /* Code block */
+    font-size: 10px;
+}
+pre { /* Code block */
+    font-size: 10px
+}
+
+
+ul { 
+    font-size: 12px;
+}
+
+li { 
+    font-size: 12px;
+}
+
+.chart-title {  /* chart_title  */
+   font-size: 14px;
+   font-weight: bold;
+   color: #07569B;
+}
+.tab {  /* tab  */
+   font-size: 14px;
+   font-family: Georgia, serif;
+}
+
+.zoom {
+  -ms-transform: scale(1.2);
+  -ms-transform-origin: 50% 0; /* IE */
+  -moz-transform: scale(1.2);
+  -moz-transform-origin: 50% 0 0;  /* Mozilla */ 
+  -webkit-transform: scale(1.2);
+  -webkit-transform-origin: 50% 0 0;  /* Chrome, Safari, Opera */
+}
+
+
+text { 
+    font-size: 8px;
+
+}
+
+caption {
+  color: #333;
+  font-weight: bold;
+}
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

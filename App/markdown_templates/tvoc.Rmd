@@ -1,0 +1,64 @@
+---
+title: "Sum of Total Volatile Organic Compounds"
+subtitle: "`r params$subtitle`"
+output:
+  word_document:
+    reference_docx: "blank.docx" # temp version created on download
+params:
+  word_mass_graph: NA
+  word_molar_graph: NA
+  subtitle: NA
+  wells: NA
+  chems: NA
+  date_range: NA
+  rendered_by_shiny: NA
+---
+
+
+```{r, include = FALSE}
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+
+# data from params ----------------------
+word_mass_graph <- params$word_mass_graph
+word_molar_graph <- params$word_molar_graph
+wells <- params$wells
+chems <- params$chems
+date_range <- params$date_range
+
+# dates ---------------------------
+# date_format_dmy <- "%d %B %Y" # e.g 11 January 2013
+date_format_mdy <- "%b %d, %Y" # e.g Jan 11 2013
+
+# chunk options
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.ext = 'AGG',
+  dpi = 300
+)
+
+```
+
+
+# Data filters
+This report is filtered to only include:
+
+* These wells: **`r combine_words(wells, sep = ", ")`**
+* Chemicals summed to calculate total VOC concentrations: **`r combine_words(chems, sep = ", ")`**
+* Results from **`r format(as.Date(date_range[1]), date_format_mdy)`** to **`r format(as.Date(date_range[2]), date_format_mdy)`**
+
+# Graph notes
+
+* When only the year is shown in the x-axis label, this represents the start of the year.
+
+\newpage
+
+
+```{r test_plots, results='asis', fig.width=8, fig.height=6}
+print(word_mass_graph)
+print(word_molar_graph)
+```

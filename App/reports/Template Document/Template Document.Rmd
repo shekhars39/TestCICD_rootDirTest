@@ -1,0 +1,284 @@
+---
+params: 
+    set_job_number: "Job Number"
+    set_client: "Client Name"
+    set_title: "Template R Lab Report"
+    set_subtitle: "Layout and RMD setup"
+    set_author: 'Your name'
+    set_doc_version: "Document 1 - Draft Version 1"
+    set_company: "CDM Smith"
+    set_office: "Level 1, 30 Wangaratta Street, Richmond VIC 3121"
+    set_phone: "Tel: +61 3 8582 6956"
+    set_logo_path: "resources/img/CDMSmith.png"
+title: "`r params$set_title`"
+subtitle: "`r params$set_subtitle`"
+author: "`r params$set_author`"
+date: "<br>`r format(Sys.time(), '%d %B, %Y')`<br>"
+output: 
+ word_document:
+    reference_docx: 'resources/CDMTemplate.docx'
+ html_document:
+    css: ['resources/css/style.css']
+    code_folding: show
+    self_contained: TRUE
+    mode: selfcontained
+    fig_caption: yes
+    toc: yes
+    number_sections: yes
+    toc_depth: 2
+    toc_float: 
+      collapsed: no
+      smooth_scroll: no
+# bibliography: 'References.bib'
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r setup, include=F, eval=T}
+###--- This code block imports the required R libraries and document settings
+
+library(tidyverse) # loads: ggplot2, tibble, tidyr, readr, purrr, and dplyr
+library(knitr)
+library(visdat)
+library(skimr)
+library(pander)
+library(flextable)
+
+###---create a default colour palette using CDM colours
+cdm_palette <- c("#7ac143", "#ffd65a", "#00bbe5", "#f47b20", "#dbe0bd", "#c0b7af")
+
+###--- Use CDMSmith::colour.adjust() to create a darker version of cdm_palette
+# cdm_palette_dark <- colour.adjust(cdm_palette, factor = 1.4, type = "hex")
+
+### --- Set some knitr defaults for all of the code blocks below.
+knitr::opts_chunk$set(
+  warning = FALSE,
+  error = FALSE,
+  message = FALSE,
+  cache = FALSE,
+  eval = TRUE,
+  results = "asis",
+  echo = TRUE,
+  fig.ext = "png",
+  out.width = "100%",
+  fig.height = 3,
+  fig.width = 8,
+  dpi = 96
+  # ,cache.path = "/cache"
+  # ,fig.keep = "/figures"
+)
+
+```
+
+
+# R Markdown 
+
+The following text and code blocks provide a generic document structure template that can be used for most projects.  
+Delete any sections that aren't needed.
+
+## Quick Guide
+
+This is an R Markdown (rmd) document template prepared for CDM Smith.
+Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a html document will be generated that includes both content as well as the output of any embedded R code chunks within the document. 
+
+This rmd template has been created to output either a html or word document.  The option to select a format is available from the **Knit** dropdown menu.
+The template assumes that the rmd file is saved within an R Project created using the CDM Smith R library folder structure.
+
+To start a new project using the rmd template:
+
+###  Load or install the CDMSmith R library 
+```{r exampleload, eval=FALSE}
+
+install.packages("https://cdmsmithonline.sharepoint.com/sites/DataScienceAustralia20/Shared%20Documents/In-House%20Development/CDM%20Smith%20R%20Library/CDMSmith_latest.tar.gz", repos = NULL, type="source")
+
+# and/or:
+
+library(CDMSmith)
+
+```
+
+
+### Create a new project in R Studio
+
+New projects can be created in a local folder, or synced with a version control system:
+
+* if not using version control:
+    + open R Studio, click File / New Project / New Directory -> then give your project a name and folder
+* if you're using bitbucket:
+    + create the repository online, copy the pull address, 
+    + open R Studio, click File / New Project / Version Control / Git -> then paste the url and select a local folder
+
+
+### Create the project folders and templates using the CDM Smith R library
+
+```{r createproj, eval=FALSE}
+CDMSmith::cdm.project()
+```
+
+### Copy the rmd template
+
+To start a new rmd, copy and rename the folder: **reports/Template Document**
+
+### IMPORTANT: Folder Paths
+
+The rmd template assumes that its saved in the project directory under: 'reports/[reportname]/...Rmd' (e.g. the template is saved in 'reports/Template Document/Template_Report01.Rmd')
+
+If you want to move the rmd to a different folder, simply edit the file paths in the rmd header (under param and output: references to the css, logo, word doc template)
+
+<br>
+
+
+# Introduction 
+CDM Smith Australia Pty Ltd (CDM Smith) has prepared this interactive tool to provide `r params$set_client` with **DESCRIPTION OF ANALYSIS**.  
+
+The project has been undertaken by:
+
+* <strong>DISCIPLINE LEADS</strong>
+* <strong>DISCIPLINE SUPPORT</strong>
+* etc.
+
+
+The analysis and interactive reporting has been prepared by:
+
+* <strong>Author 1</strong> Title/Position ([email@cdmsmith.com](mailto:email@cdmsmith.com?Subject=))
+* etc.
+
+
+# Objective
+The objective of the analysis is to ... 
+
+
+# Source Data
+
+Example data was sourced from:
+
+* the [**palmerpenguins** package](https://allisonhorst.github.io/palmerpenguins/)
+* Data were collected and made available by Dr. Kristen Gorman and the Palmer Station, Antarctica LTER, a member of the Long Term Ecological Research Network.
+
+
+
+# Methods
+Summary of the analysis conducted in the script.
+
+## Load Data Sources
+
+```{r load}
+# install.packages(palmerpenguins)
+penguins <- palmerpenguins::penguins
+
+###--- Example importers for other data formats:
+# df.csv <- read.csv()
+# df.xl <- readxl::read_excel()
+# df.spatial <- sf::read_sf()
+
+```
+
+
+## Review Datasets
+
+### Data Completeness
+
+The following chart presents the format and completeness of data within the dataset.
+
+NOTE: **NA** represents missing data.  The fields that are empty (i.e. all NA) were removed from the dataset.
+
+```{r visdat, fig.cap="NOTE: 'NA' represents missing data."}
+
+vis_dat(penguins, warn_large_data = FALSE) +
+  coord_flip() +
+  theme_bw() +
+  labs(title=paste("Attribute Types and Complete Observations"))
+
+```
+
+
+
+### Calculate the means
+
+```{r meancalc}
+
+penguins_means <- penguins %>% 
+  filter(!is.na(sex)) %>% 
+  group_by(species, island) %>% 
+  summarise(across(bill_length_mm:body_mass_g, mean, na.rm = TRUE))
+
+```
+
+# Results
+
+## Data Table
+
+**Means by species and island**
+
+```{r meantable }
+
+# function from this package - produces kable if html, or formatted word table if Word
+CDMSmith::cdm_output_dependent_table(penguins_means)
+  
+```
+
+##  Plot Data
+
+```{r plot, echo=FALSE, fig.cap="Example ggplot Output", dpi = 96 }
+
+ggplot(penguins, aes(flipper_length_mm, bill_length_mm, colour = species)) +
+  geom_point() +
+  theme(legend.position = "bottom") +
+  labs(title = "Flipper length by bill length (mm)",
+       subtitle = "By species",
+       colour = "Species",
+       x = "Flipper length (mm)",
+       y = "Bill length (mm)")
+
+```
+
+
+
+# Disclaimer and Limitations
+
+This Letter has been prepared by CDM Smith Australia Pty Ltd (CDM Smith) for the benefit of `r params$set_client` for the sole purpose of providing a Rapid Opinion on Health Impacts of Reduced Sulfur Compounds.
+
+This Letter should not be used or relied upon for any other purpose without CDM Smith’s prior written consent. Neither CDM Smith, nor any officer or employee of CDM Smith, accepts responsibility or liability in any way whatsoever for the use of or reliance on this letter for any purpose other than that for which it has been prepared.  
+
+Except with CDM Smith’s prior written consent, this letter may not be: 
+
+(a) released to any other party, whether in whole or in part (other than to officers, employees and advisers of `r params$set_client`);
+(b) used or relied upon by any other party with the exception of `r params$set_client` ; or
+(c) filed with any Governmental agency or other person or quoted or referred to in any public document.
+
+Neither CDM Smith, nor any officer or employee of CDM Smith, accepts responsibility or liability for or in respect of any use or reliance upon this letter by any third party.
+
+The information on which this letter is based has been provided by `r params$set_client` and third parties. CDM Smith (including its officers and employees):
+
+(a) has relied upon and presumed the accuracy of this information;
+(b) has not verified the accuracy or reliability of this information (other than as expressly stated in this letter);
+(c) has not made any independent investigations or enquiries in respect of those matters of which it has no actual knowledge at the time of giving this letter to `r params$set_client` ; and
+(d) makes no warranty or guarantee, expressed or implied, as to the accuracy or reliability of this information.
+
+In recognition of the limited use to be made by `r params$set_client` of this letter, `r params$set_client` agrees that, to the maximum extent permitted by law, CDM Smith (including its officers and employees) shall not be liable for any losses, claims, costs, expenses, damages (whether in statute, in contract or tort for negligence or otherwise) suffered or incurred by `r params$set_client` or any third party as a result of or in connection with the information, findings, opinions, estimates, recommendations and conclusions provided in the course of this letter.
+
+If further information becomes available, or additional assumptions need to be made, CDM Smith reserves its right to amend this letter.
+
+
+# Session Information
+
+```{r session, echo=FALSE}
+
+gsub(pattern = "Platform:", replacement = "Platform ", x = pander(sessionInfo(), compact = TRUE, locale = FALSE))
+
+```
+
+
+<!-- DO NOT DELETE - this script tag adds the logo, title, project and office details (from params) to the table of contents -->
+<script>
+   $(document).ready(function() {
+     $head = $('#TOC');
+     $head.prepend('<figure><img src=`r markdown:::.b64EncodeFile(params$set_logo_path)` style=\"float: center; padding:10px 40px; width: 250px;\"/><figcaption><h2 class="toc">`r params$set_title`</h2></figcaption></figure>' );
+     $head.append('<hr><div align="center"><p><small>Job No. `r params$set_job_number`<br>`r params$set_doc_version` <br>`r format(Sys.time(), '%d %B, %Y')`</small></p><p><small>`r params$set_company`<br>`r params$set_office`<br></small></p></div>');
+   });
+</script>
+
+<hr>

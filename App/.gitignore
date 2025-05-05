@@ -1,0 +1,12 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+superseded/
+superseded/
+ss/
+report_output/
+*.7z
+*.zip
+*_cache/
+*_files/

@@ -1,0 +1,177 @@
+---
+# title: NA
+output:
+  word_document:
+    reference_docx: "blank.docx" # temp version created on download
+params:
+  analyte: NA
+  well: NA
+  dataset: NA
+  scale: NA
+  slope: NA
+  intercept: NA
+  summary_table_wide: NA
+  frac: NA
+  date_range: NA
+  rendered_by_shiny: FALSE
+---
+
+<!-- Use this as the title instead -- it is smaller -->
+# `r paste0(params$analyte, ': ',  params$well)` 
+
+
+```{r, include = FALSE}
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(flextable)
+
+# data from params ----------------------
+analyte <- params$analyte
+well <- params$well
+dataset <- params$dataset
+rscale <- params$scale
+slope <- params$slope
+intercept <- params$intercept
+summary_table_wide <- params$summary_table_wide
+frac <- params$frac
+date_range <- params$date_range
+
+
+# dates ---------------------------
+# date_format_dmy <- "%d %B %Y" # e.g 11 January 2013
+date_format_mdy <- "%b %d, %Y" # e.g Jan 11 2013
+
+# chunk options
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.ext = 'AGG',
+  dpi = 300
+)
+```
+
+```{r}
+# this works because there is only one location/ well group due to the filters
+lgc <- unique(dataset$LOC_GROUP_CODE)
+mag <- unique(dataset$METHOD_ANALYTE_GROUP)
+slc <- unique(dataset$SYS_LOC_CODE)
+casrn <- unique(dataset$CAS_RN)
+cn <- unique(dataset$CHEMICAL_NAME)
+un <- unique(dataset$REPORT_RESULT_UNIT)
+```
+
+
+<!-- ## Data filters -->
+
+This report is filtered to only include:
+
+* Results from **`r format(as.Date(date_range[1]), date_format_mdy)`** to **`r format(as.Date(date_range[2]), date_format_mdy)`**
+* SYS_LOC_CODE: **`r slc`**
+* CAS_RN: **`r casrn`**
+* CHEMICAL_NAME: **`r cn`**
+* REPORT_RESULT_UNIT: **`r un`**
+* FRACTION: **`r frac`**
+
+## Time series graph
+
+* When only the year is shown in the x-axis label, this represents the start of the year
+* ORP values that are negative cannot be put in to a log10 scale graph and will not show.
+
+```{r, results='asis', fig.width=8, fig.height=6}
+# the graph -- initial then conditional depending on scale
+p1 <- single_dataset_graph_initial_ggg(dataset, rscale)
+
+if(rscale == "log"){
+  p1 +
+    geom_smooth(data = dataset %>%
+                  filter(DETECT_FLAG == "Y"),
+                colour = "blue",
+                se = FALSE,
+                size = 0.5)
+} else {
+  p1 +
+    geom_abline(aes(slope = slope,
+                    intercept = intercept,
+                    colour = "Theil-Sen Line"),
+                colour = "blue")
+}
+
+```
+
+\newpage
+
+## Boxplot
+
+```{r, results='asis', fig.width=8, fig.height=4}
+single_dataset_jittered_boxplot(dataset)
+```
+
+\newpage
+
+## Dataset values
+
+
+```{r}
+# CDM Smith package not loaded, so we'll put this here
+cdmWordTable <- function(df) {
+
+  df %>%
+    flextable(theme_fun = theme_box) %>%
+    align(align = "center", part = "all" ) %>%
+    font(fontname = "Calibri", part = "all") %>%
+    bg(bg = "#003399", part = "header") %>%
+    color(color = "white", part = "header") %>%
+    border_inner_v(part = "header", border = officer::fp_border(color="white")) %>%
+    fontsize(size = 8, part = "all") %>%
+    height(height = ifelse(flextable_dim(.)$width<6.5, dim(.)$heights
+                                      , (dim(.)$heights * ceiling(flextable_dim(.)$width/6.5)))) %>%
+    width(width = dim(.)$widths*(6.5/(flextable_dim(.)$widths))) %>% 
+    # edits to original table
+    line_spacing(space = 0.25, part = "all")
+}
+
+cdmWordTable(dataset %>% 
+               select(SAMPLE_DATE, REPORT_RESULT_VALUE, INTERPRETED_QUALIFIERS))
+```
+
+\newpage
+
+## Statistics
+
+```{r}
+summary_table_wide %>% 
+  select(-(SYS_LOC_CODE:`Dataset end`)) %>% 
+  mutate(across(everything(), as.character)) %>% 
+  pivot_longer(cols = everything()) %>% 
+  rename(Item = name,
+         Value = value) %>% 
+  cdmWordTable()
+```
+
+<!-- ## Dataset details -->
+
+<!-- # ```{r} -->
+<!-- # cdmWordTable(summary_table_wide[1:11]) -->
+<!-- # ``` -->
+
+<!-- ## Parameter estimate details -->
+
+<!-- ```{r} -->
+<!-- cdmWordTable(summary_table_wide[12:16]) -->
+<!-- ``` -->
+
+<!-- ## Confidence limit details -->
+
+<!-- ```{r} -->
+<!-- cdmWordTable(summary_table_wide[17:23]) -->
+<!-- ``` -->
+
+<!-- ## Trend details -->
+
+<!-- ```{r} -->
+<!-- cdmWordTable(summary_table_wide[24:31]) -->
+<!-- ``` -->
+

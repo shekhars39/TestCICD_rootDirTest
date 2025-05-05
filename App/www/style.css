@@ -1,0 +1,296 @@
+
+#nav {
+  margin-bottom: 0;
+  color: white;
+}
+
+body {
+  padding-top: 52px;
+}
+
+#map {
+  z-index: 1;
+}
+
+#loading-content {
+  position: absolute;
+  background: #000000;
+  opacity: 0.9;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  height: 100%;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+#zoom_map {
+  z-index: 2;
+}
+
+#controls {
+  /* Appearance */
+  background-color: white;
+  padding: 0 20px 20px 20px;
+  border-radius: 5px;
+  cursor: move;
+  /* Fade out while not hovering */
+  opacity: 0.65;
+  zoom: 0.9;
+  transition: opacity 500ms 1s;
+  z-index: 2;
+}
+
+#controls:hover {
+  /* Fade in while hovering */
+  opacity: 0.95;
+  transition-delay: 0;
+}
+
+#controls_solid {
+  /* Appearance */
+  background-color: white;
+  padding: 0 20px 20px 20px;
+  opacity: 0.85;
+  border-radius: 5px;
+  z-index: 2;
+}
+
+.icon-red {
+  color: #d7191c;
+  padding:0;
+}
+
+.icon-blue {
+  color: #08519c;
+  padding:0;
+}
+
+.icon-yellow {
+  color:#ffd92f;
+}
+
+.icon-orange {
+  color:#fc8d62;
+}
+
+.icon-ltblue {
+  color:#a6cee3;
+}
+
+.icon-grey {
+  color:#636363;
+}
+
+.icon-pink {
+  color:#f781bf;
+}
+
+.icon-brightyellow {
+  color:#ffff33;
+}
+
+
+
+.btn-green {
+  background-color: #7ac043;
+  color: white;
+}
+
+.btn-green:hover, .btn-green:focus, .btn-green:active {
+  background-color: #63a036;
+  color: white;
+}
+
+.btn-blue {
+  background-color: #003399;
+  color: white;
+}
+
+.btn-blue:hover, .btn-blue:focus, .btn-blue:active {
+  background-color: #00246c;
+  color: white;
+}
+
+.btn-ltblue {
+  background-color: #0081c6;
+  color: white;
+}
+
+.btn-ltblue:hover, .btn-ltblue:focus, .btn-ltblue:active {
+  background-color: #0069a4;
+  color: white;
+}
+
+
+.title {
+  margin-right: 200px;
+  color: white;
+  font-family: Calibri, sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+h1 {
+  color: #00539b;
+  font-family: Calibri, sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h2 {
+  color: #00539b;
+  font-family: Calibri, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+h3 {
+  color: #0081c6;
+  font-family: Calibri, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  padding-top:0;
+  padding-bottom:2px;
+}
+
+h4 {
+  color: black;
+  font-family: Calibri, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+h5 {
+  color: black;
+  font-family: Calibri, sans-serif;
+  font-size: 12px;
+  font-style: italic;
+}
+
+caption {
+  font-size: 4px;
+  color: #00539b;
+  font-style: italic;
+}
+
+.figure {
+  color: #00539b;
+  font-style: italic;
+  font-size: 4px;
+}
+
+
+table thread, table .even {
+  background-color: #f7f7f7;
+}
+
+
+
+/* override for valuebox on data selection */
+.small-box h3 {
+  color: #FFFFFF;
+}
+
+/* sidebar menu overflow text wrap */
+.sidebar-menu > data-display-if > p {
+    white-space: normal;
+    padding: 0px 10px 0px 10px;
+}
+
+/* conditional panel background colour and overflow text
+all id starting with cp */
+[id^=cp] {
+  white-space: normal;
+  padding: 0px 10px 0px 10px;
+}
+
+/* plotly hovertext opacity */
+g.hovertext > path {
+  opacity: .6;
+}
+
+/* extra bits taken from the endboard-esdat app */
+/* logo */
+.skin-blue .main-header .logo {
+                      background-color: rgb(0, 48, 135);
+                      }
+/* logo when hovered */
+.skin-blue .main-header .logo:hover {
+                      background-color: rgb(0, 48, 135);
+                      }
+/* navbar (rest of the header) */
+.skin-blue .main-header .navbar {
+                      background-color: rgb(0, 48, 135);
+                      }        
+/* main sidebar */
+.skin-blue .main-sidebar {
+                      background-color: rgb(212, 211, 207);
+                      }
+                      
+/* active selected tab in the sidebarmenu */
+.skin-blue .main-sidebar .sidebar .sidebar-menu .active a{
+                      background-color: rgb(0, 48, 135);
+                      }
+/* other links in the sidebarmenu, but not buttons */
+.skin-blue .main-sidebar .sidebar .sidebar-menu a:not(.btn){
+                      background-color: #000000;
+                      color: #ffffff;
+                      font-size: 20px; 
+                      }
+/* other links in the sidebarmenu when hovered */
+ .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover{
+                      background-color: #00ffff; /* edited */
+                      }
+/* toggle button when hovered  */                    
+ .skin-blue .main-header .navbar .sidebar-toggle:hover{
+                      background-color: rgb(0,132,201);
+ }
+ 
+/* sidebar links */       
+.skin-blue .sidebar a {
+        color: rgb(0, 48, 135);
+}
+
+/* sidebar text padding h2, h3 */ 
+.skin-blue .sidebar h2 {
+        padding-left: 15px;
+        color: rgb(0, 48, 135);
+}
+
+/* sidebar text padding p  */ 
+.skin-blue .sidebar p {
+        padding-left: 15px;
+        color: #000000;
+}
+
+/* sidebar text for input labels  */ 
+.skin-blue .sidebar .control-label {
+        color: #000000;
+}
+
+
+
+/* shiny progress location
+.shiny-notification {
+  position: fixed;
+  top: 60% ;
+  left: 50%
+}
+ */
+ 
+/* button for the upload template  */ 
+#data_upload-download {
+        color: #333;
+        background-color: #fff;
+        border-color: #ccc;
+        margin-left: 15px;
+}
+
+/* default font */
+* { font-family: Calibri, sans-serif;}
+
+/* calendar popup */
+.datepicker-days {
+        padding-top: 80px;
+}

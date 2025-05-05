@@ -1,0 +1,70 @@
+---
+title: "`r paste(params$analyte, ' time series plots for all wells')`"
+output:
+  word_document:
+    reference_docx: "blank.docx" # temp version created on download
+params:
+  word_graphs: NA
+  analyte: NA
+  date_range: NA
+  frac: NA
+  rendered_by_shiny: FALSE
+---
+
+
+```{r, include = FALSE}
+library(tidyverse)
+library(lubridate)
+library(scales)
+
+
+# data from params ----------------------
+word_graphs <- params$word_graphs
+analyte <- params$analyte
+date_range <- params$date_range
+frac <- params$frac
+
+# dates ---------------------------
+# date_format_dmy <- "%d %B %Y" # e.g 11 January 2013
+date_format_mdy <- "%b %d, %Y" # e.g Jan 11 2013
+
+# chunk options
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.ext = 'AGG',
+  dpi = 300
+)
+```
+
+
+# Notes
+This report is filtered to only include:
+
+* Dates from **`r format(as.Date(date_range[1]), date_format_mdy)`** to **`r format(as.Date(date_range[2]), date_format_mdy)`**
+* Fraction: **`r frac`**
+* When only the year is shown in the x-axis label, this represents the start of the year.
+* A smoothed line only fitting detected data is shown on graphs
+
+\newpage
+
+
+# Plots
+
+```{r test_plots, results='asis', fig.width=8, fig.height=8}
+
+cat('\n\n', analyte, ' for all wells\n')
+
+print_graphs <- function(x, prog){
+  print(x)
+
+  if(params$rendered_by_shiny){
+    incProgress(prog) # shiny progress
+  }
+}
+
+walk(word_graphs, ~print_graphs(.x, 1/length(word_graphs)))
+
+```
+

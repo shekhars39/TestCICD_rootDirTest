@@ -1,0 +1,153 @@
+---
+# title: NA
+output:
+  word_document:
+    reference_docx: "blank.docx" # temp version created on download
+params:
+  dataset: NA
+  well: NA
+  analyte: NA
+  min_date: NA
+  max_date: NA
+  frac: NA
+  criteria_df: NA
+  molar_mass_table: NA
+  conf_level: NA
+  rendered_by_shiny: FALSE
+---
+
+<!-- Use this as the title instead -- it is smaller -->
+# `r paste0(params$analyte, ': ',  params$well)` 
+
+
+```{r, include = FALSE}
+library(tidyverse)
+library(lubridate)
+library(scales)
+library(knitr)
+library(flextable)
+
+# # data from params ----------------------
+dataset <- params$dataset
+well <- params$well
+analyte <- params$analyte
+min_date <- params$min_date
+max_date <- params$max_date
+frac <- params$frac
+criteria_df <- params$criteria_df
+molar_mass_table <- params$molar_mass_table
+conf_level <- params$conf_level
+is_ggiraph <- FALSE
+
+
+# dates ---------------------------
+# date_format_dmy <- "%d %B %Y" # e.g 11 January 2013
+date_format_mdy <- "%b %d, %Y" # e.g Jan 11 2013
+
+# chunk options
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.ext = 'AGG',
+  dpi = 300
+)
+```
+
+```{r}
+# function for the outputs
+first_order <- first_order_data(data_df = dataset, 
+                                well_selected = well,
+                                analyte_selected = analyte,
+                                min_date = min_date,
+                                max_date = max_date,
+                                frac = frac,
+                                criteria_df = criteria_df,
+                                molar_mass_table = molar_mass_table,
+                                conf_level = conf_level,
+                                is_ggiraph = FALSE)
+```
+
+
+<!-- ## Data filters -->
+
+This report is filtered to only include:
+
+* Results from **`r format(as.Date(min_date), date_format_mdy)`** to **`r format(as.Date(max_date), date_format_mdy)`**
+* SYS_LOC_CODE: **`r well`**
+* CAS_RN: **`r dataset |> filter(CHEMICAL_NAME == analyte) |> distinct(CAS_RN) |> pull(CAS_RN)`**
+* CHEMICAL_NAME: **`r analyte`**
+* FRACTION: **`r frac`**
+
+\newpage
+
+## Dataset information
+
+```{r}
+# CDM Smith package not loaded, so we'll put this here
+cdmWordTable <- function(df) {
+
+  df %>%
+    flextable(theme_fun = theme_box) %>%
+    align(align = "center", part = "all" ) %>%
+    font(fontname = "Calibri", part = "all") %>%
+    bg(bg = "#003399", part = "header") %>%
+    color(color = "white", part = "header") %>%
+    border_inner_v(part = "header", border = officer::fp_border(color="white")) %>%
+    fontsize(size = 8, part = "all") %>%
+    height(height = ifelse(flextable_dim(.)$width<6.5, dim(.)$heights
+                                      , (dim(.)$heights * ceiling(flextable_dim(.)$width/6.5)))) %>%
+    width(width = dim(.)$widths*(6.5/(flextable_dim(.)$widths))) %>% 
+    # edits to original table
+    line_spacing(space = 0.25, part = "all")
+}
+
+
+```
+
+
+```{r}
+cdmWordTable(first_order$values_df) |> 
+  height(height = 1.5, part = "header")
+```
+
+\newpage
+
+```{r}
+cdmWordTable(first_order$table)
+```
+
+\newpage
+
+## Model coefficients
+
+First order model
+
+```{r}
+cdmWordTable(first_order$lm_tidy)
+```
+
+Exponential first-order model
+
+```{r}
+cdmWordTable(first_order$exp_tidy)
+```
+
+
+## Model summary
+
+```{r}
+cdmWordTable(first_order$lm_glance)
+```
+
+
+## Charts
+
+```{r}
+first_order$lm_graph
+```
+
+```{r}
+first_order$exp_graph
+```
+
